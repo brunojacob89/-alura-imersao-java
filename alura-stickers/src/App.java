@@ -1,5 +1,7 @@
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -9,7 +11,7 @@ import java.util.Map;
 
 public class App {
 	
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args) throws Exception {
 		
 		
 		// fazer uma conexao HTTP e busca os top 250 filmes;
@@ -27,11 +29,20 @@ public class App {
 		
 		// exibir e manipular os dados
 		for (Map<String, String> filme : listaDeFilmes) {
-			System.out.println(filme.get("title"));
-			System.out.println(filme.get("image"));
-			System.out.println(filme.get("imDbRating"));
-			System.out.println();
 			
+			String urlImagem = filme.get("image");
+			String titulo = filme.get("title");
+			
+			InputStream inputStream = new URL(urlImagem).openStream();
+			
+			String nomeArquivo = titulo + ".png";
+			
+			GeradoraDeFigurinhas geradora = new GeradoraDeFigurinhas();
+			geradora.Cria(inputStream, nomeArquivo);
+			
+			System.out.println(filme.get("title"));
+			System.out.println();
+						
 		}
 		
 		
